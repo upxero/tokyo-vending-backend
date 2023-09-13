@@ -19,6 +19,10 @@ public class Product {
     @Column(length = 255)
     private String specifications;
 
+    @ManyToOne(fetch = FetchType.LAZY) // Many products belong to one category.
+    @JoinColumn(name = "category_id") // This column holds the foreign key to the Category table.
+    private Category category; // Reference to the Category entity.
+
     public Long getId() {
         return id;
     }
@@ -50,5 +54,14 @@ public class Product {
     public void setSpecifications(String specifications) {
         this.specifications = specifications;
     }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 }
+
 

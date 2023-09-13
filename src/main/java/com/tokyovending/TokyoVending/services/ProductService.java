@@ -1,5 +1,6 @@
 package com.tokyovending.TokyoVending.services;
 
+import com.tokyovending.TokyoVending.exceptions.RecordNotFoundException;
 import com.tokyovending.TokyoVending.models.Product;
 import com.tokyovending.TokyoVending.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,8 @@ public class ProductService {
     }
 
     public Product getProductById(Long id) {
-        return productRepository.findById(id).orElse(null);
+        return productRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException("Product with ID '" + id + "' not found."));
     }
 
     public Product createProduct(Product product) {
@@ -30,18 +32,16 @@ public class ProductService {
     }
 
     public Product updateProduct(Long id, Product product) {
-        Product existingProduct = productRepository.findById(id).orElse(null);
-        if (existingProduct != null) {
-            existingProduct.setName(product.getName());
-            existingProduct.setPrice(product.getPrice());
-            existingProduct.setSpecifications(product.getSpecifications());
-            return productRepository.save(existingProduct);
-        }
-        return null;
+        Product existingProduct = getProductById(id);
+        existingProduct.setName(product.getName());
+        existingProduct.setPrice(product.getPrice());
+        existingProduct.setSpecifications(product.getSpecifications());
+        return productRepository.save(existingProduct);
     }
 
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
     }
 }
+
 
