@@ -1,4 +1,10 @@
 package com.tokyovending.TokyoVending.repositories;
 
-public interface AdminRepository {
+import com.tokyovending.TokyoVending.models.Admin;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface AdminRepository extends JpaRepository<Admin, Long> {
 }
+
