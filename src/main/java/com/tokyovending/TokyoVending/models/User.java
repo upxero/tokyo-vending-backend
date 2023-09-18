@@ -16,7 +16,9 @@ public class User {
     @Column(nullable = false, length = 255)
     private String password;
 
+    @Column(nullable = false, unique = true)
     private String email;
+
     private String profilePicture;
 
     public Long getId() {
@@ -59,4 +61,5 @@ public class User {
         this.profilePicture = profilePicture;
     }
 }
+
 
