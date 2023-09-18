@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/vendingmachines")
+@RequestMapping("/vending-machines")
 public class VendingMachineController {
 
     private final VendingMachineService vendingMachineService;

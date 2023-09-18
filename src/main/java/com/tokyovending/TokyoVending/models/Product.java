@@ -19,9 +19,9 @@ public class Product {
     @Column(length = 255)
     private String specifications;
 
-    @ManyToOne(fetch = FetchType.LAZY) // Many products belong to one category.
-    @JoinColumn(name = "category_id") // This column holds the foreign key to the Category table.
-    private Category category; // Reference to the Category entity.
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     public Long getId() {
         return id;
