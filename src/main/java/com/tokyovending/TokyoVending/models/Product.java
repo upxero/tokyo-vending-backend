@@ -21,6 +21,10 @@ public class Product {
     private String specifications;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vending_machine_id")
+    private VendingMachine vendingMachine;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
 
@@ -57,6 +61,14 @@ public class Product {
 
     public void setSpecifications(String specifications) {
         this.specifications = specifications;
+    }
+
+    public VendingMachine getVendingMachine() {
+        return vendingMachine;
+    }
+
+    public void setVendingMachine(VendingMachine vendingMachine) {
+        this.vendingMachine = vendingMachine;
     }
 
     public Category getCategory() {
