@@ -1,6 +1,7 @@
 package com.tokyovending.TokyoVending.models;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -22,6 +23,9 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @ManyToMany(mappedBy = "favoriteProducts")
+    private List<User> favoritedByUsers;
 
     public Long getId() {
         return id;
@@ -62,6 +66,15 @@ public class Product {
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    public List<User> getFavoritedByUsers() {
+        return favoritedByUsers;
+    }
+
+    public void setFavoritedByUsers(List<User> favoritedByUsers) {
+        this.favoritedByUsers = favoritedByUsers;
+    }
 }
+
 
 
