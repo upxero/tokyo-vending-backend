@@ -1,6 +1,7 @@
 package com.tokyovending.TokyoVending.models;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "admins")
@@ -15,6 +16,12 @@ public class Admin {
 
     @Column(nullable = false)
     private String email;
+
+    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
+    private List<VendingMachine> vendingMachines;
+
+    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
+    private List<User> managedUsers;
 
     public Long getId() {
         return id;
@@ -39,6 +46,23 @@ public class Admin {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public List<VendingMachine> getVendingMachines() {
+        return vendingMachines;
+    }
+
+    public void setVendingMachines(List<VendingMachine> vendingMachines) {
+        this.vendingMachines = vendingMachines;
+    }
+
+    public List<User> getManagedUsers() {
+        return managedUsers;
+    }
+
+    public void setManagedUsers(List<User> managedUsers) {
+        this.managedUsers = managedUsers;
+    }
 }
+
 
 
