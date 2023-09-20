@@ -1,12 +1,13 @@
 package com.tokyovending.TokyoVending.services;
 
-import com.tokyovending.TokyoVending.exceptions.RecordNotFoundException;
+import com.tokyovending.TokyoVending.dtos.VendingMachineDto;
 import com.tokyovending.TokyoVending.models.VendingMachine;
 import com.tokyovending.TokyoVending.repositories.VendingMachineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class VendingMachineService {
@@ -18,27 +19,55 @@ public class VendingMachineService {
         this.vendingMachineRepository = vendingMachineRepository;
     }
 
-    public List<VendingMachine> getAllVendingMachines() {
-        return vendingMachineRepository.findAll();
+    public List<VendingMachineDto> getAllVendingMachines() {
+        List<VendingMachine> vendingMachines = vendingMachineRepository.findAll();
+        return vendingMachines.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
-    public VendingMachine getVendingMachineById(Long id) {
-        return vendingMachineRepository.findById(id)
-                .orElseThrow(() -> new RecordNotFoundException("VendingMachine with ID " + id + " not found."));
+    public VendingMachineDto getVendingMachineById(Long id) {
+        VendingMachine vendingMachine = vendingMachineRepository.findById(id).orElse(null);
+        if (vendingMachine != null) {
+            return convertToDto(vendingMachine);
+        }
+        return null;
     }
 
-    public VendingMachine createVendingMachine(VendingMachine vendingMachine) {
-        return vendingMachineRepository.save(vendingMachine);
+    public VendingMachineDto createVendingMachine(VendingMachineDto vendingMachineDto) {
+        VendingMachine vendingMachine = convertToEntity(vendingMachineDto);
+        VendingMachine savedVendingMachine = vendingMachineRepository.save(vendingMachine);
+        return convertToDto(savedVendingMachine);
     }
 
-    public VendingMachine updateVendingMachine(Long id, VendingMachine vendingMachine) {
-        VendingMachine existingVendingMachine = getVendingMachineById(id);
-        existingVendingMachine.setLocation(vendingMachine.getLocation());
-        return vendingMachineRepository.save(existingVendingMachine);
+    public VendingMachineDto updateVendingMachine(Long id, VendingMachineDto vendingMachineDto) {
+        VendingMachine existingVendingMachine = vendingMachineRepository.findById(id).orElse(null);
+        if (existingVendingMachine != null) {
+            updateEntityFromDto(existingVendingMachine, vendingMachineDto);
+            VendingMachine updatedVendingMachine = vendingMachineRepository.save(existingVendingMachine);
+            return convertToDto(updatedVendingMachine);
+        }
+        return null;
     }
 
     public void deleteVendingMachine(Long id) {
         vendingMachineRepository.deleteById(id);
     }
+
+    private VendingMachineDto convertToDto(VendingMachine vendingMachine) {
+        VendingMachineDto vendingMachineDto = new VendingMachineDto();
+        vendingMachineDto.setId(vendingMachine.getId());
+        vendingMachineDto.setLocation(vendingMachine.getLocation());
+        return vendingMachineDto;
+    }
+
+    private VendingMachine convertToEntity(VendingMachineDto vendingMachineDto) {
+        VendingMachine vendingMachine = new VendingMachine();
+        updateEntityFromDto(vendingMachine, vendingMachineDto);
+        return vendingMachine;
+    }
+
+    private void updateEntityFromDto(VendingMachine vendingMachine, VendingMachineDto vendingMachineDto) {
+        vendingMachine.setLocation(vendingMachineDto.getLocation());
+    }
 }
+
 
