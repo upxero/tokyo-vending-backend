@@ -8,7 +8,7 @@ import java.util.List;
 public class CartDto {
     private Long id;
     private User user;
-    private List<Product> products;  // Voeg producten toe aan de winkelwagen, afhankelijk van je vereisten.
+    private List<Product> products;
 
     public Long getId() {
         return id;

@@ -70,15 +70,18 @@ public class CartController {
     private CartDto convertToDto(Cart cart) {
         CartDto cartDto = new CartDto();
         cartDto.setId(cart.getId());
-        // Voeg andere attributen toe zoals gebruikers en producten in de winkelwagen, afhankelijk van je vereisten.
+        cartDto.setUser(cart.getUser());
+        cartDto.setProducts(cart.getProducts());
         return cartDto;
     }
 
     private Cart convertToEntity(CartDto cartDto) {
         Cart cart = new Cart();
         cart.setId(cartDto.getId());
-        // Voeg andere attributen toe zoals gebruikers en producten in de winkelwagen, afhankelijk van je vereisten.
+        cart.setUser(cartDto.getUser());
+        cart.setProducts(cartDto.getProducts());
         return cart;
     }
 }
+
 

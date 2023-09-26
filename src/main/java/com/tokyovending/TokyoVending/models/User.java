@@ -2,6 +2,7 @@ package com.tokyovending.TokyoVending.models;
 
 import jakarta.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -110,6 +111,10 @@ public class User {
 
     public void setAdmin(Admin admin) {
         this.admin = admin;
+    }
+
+    public Set<Authority> getAuthorities() {
+        return null;
     }
 }
 

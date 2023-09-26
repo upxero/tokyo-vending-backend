@@ -34,7 +34,6 @@ public class CartService {
         Cart existingCart = getCartById(id);
         if (existingCart != null) {
             existingCart.setUser(cart.getUser());
-            // Voeg andere attributen toe zoals producten in de winkelwagen, afhankelijk van je vereisten.
             return cartRepository.save(existingCart);
         }
         return null;

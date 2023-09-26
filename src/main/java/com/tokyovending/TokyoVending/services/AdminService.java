@@ -1,11 +1,13 @@
 package com.tokyovending.TokyoVending.services;
 
+import com.tokyovending.TokyoVending.dtos.AdminDto;
 import com.tokyovending.TokyoVending.models.Admin;
 import com.tokyovending.TokyoVending.repositories.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AdminService {
@@ -17,24 +19,34 @@ public class AdminService {
         this.adminRepository = adminRepository;
     }
 
-    public List<Admin> getAllAdmins() {
-        return adminRepository.findAll();
+    public List<AdminDto> getAllAdmins() {
+        List<Admin> admins = adminRepository.findAll();
+        return admins.stream().map(this::convertToAdminDto).collect(Collectors.toList());
     }
 
-    public Admin getAdminById(Long id) {
-        return adminRepository.findById(id).orElse(null);
+    public AdminDto getAdminById(Long id) {
+        Admin admin = adminRepository.findById(id).orElse(null);
+        if (admin != null) {
+            return convertToAdminDto(admin);
+        }
+        return null;
     }
 
-    public Admin createAdmin(Admin admin) {
-        return adminRepository.save(admin);
+    public AdminDto createAdmin(AdminDto adminDto) {
+        Admin admin = new Admin();
+        admin.setUsername(adminDto.getUsername());
+        admin.setEmail(adminDto.getEmail());
+        Admin savedAdmin = adminRepository.save(admin);
+        return convertToAdminDto(savedAdmin);
     }
 
-    public Admin updateAdmin(Long id, Admin admin) {
-        Admin existingAdmin = getAdminById(id);
+    public AdminDto updateAdmin(Long id, AdminDto adminDto) {
+        Admin existingAdmin = adminRepository.findById(id).orElse(null);
         if (existingAdmin != null) {
-            existingAdmin.setUsername(admin.getUsername());
-            existingAdmin.setEmail(admin.getEmail());
-            return adminRepository.save(existingAdmin);
+            existingAdmin.setUsername(adminDto.getUsername());
+            existingAdmin.setEmail(adminDto.getEmail());
+            Admin updatedAdmin = adminRepository.save(existingAdmin);
+            return convertToAdminDto(updatedAdmin);
         }
         return null;
     }
@@ -42,6 +54,15 @@ public class AdminService {
     public void deleteAdmin(Long id) {
         adminRepository.deleteById(id);
     }
+
+    private AdminDto convertToAdminDto(Admin admin) {
+        AdminDto adminDto = new AdminDto();
+        adminDto.setId(admin.getId());
+        adminDto.setUsername(admin.getUsername());
+        adminDto.setEmail(admin.getEmail());
+        return adminDto;
+    }
 }
+
 
 
