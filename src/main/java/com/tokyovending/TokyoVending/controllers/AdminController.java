@@ -2,7 +2,6 @@ package com.tokyovending.TokyoVending.controllers;
 
 import com.tokyovending.TokyoVending.dtos.AdminDto;
 import com.tokyovending.TokyoVending.exceptions.RecordNotFoundException;
-import com.tokyovending.TokyoVending.models.Admin;
 import com.tokyovending.TokyoVending.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/admins")
@@ -26,18 +24,15 @@ public class AdminController {
 
     @GetMapping
     public ResponseEntity<List<AdminDto>> getAllAdmins() {
-        List<Admin> admins = adminService.getAllAdmins();
-        List<AdminDto> adminDtos = admins.stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
+        List<AdminDto> adminDtos = adminService.getAllAdmins();
         return ResponseEntity.ok(adminDtos);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<AdminDto> getAdminById(@PathVariable Long id) {
-        Admin admin = adminService.getAdminById(id);
-        if (admin != null) {
-            return ResponseEntity.ok(convertToDto(admin));
+        AdminDto adminDto = adminService.getAdminById(id);
+        if (adminDto != null) {
+            return ResponseEntity.ok(adminDto);
         } else {
             throw new RecordNotFoundException("Admin with ID " + id + " not found.");
         }
@@ -45,17 +40,15 @@ public class AdminController {
 
     @PostMapping
     public ResponseEntity<AdminDto> createAdmin(@Valid @RequestBody AdminDto adminDto) {
-        Admin admin = convertToEntity(adminDto);
-        Admin createdAdmin = adminService.createAdmin(admin);
-        return ResponseEntity.status(HttpStatus.CREATED).body(convertToDto(createdAdmin));
+        AdminDto createdAdminDto = adminService.createAdmin(adminDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdAdminDto);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<AdminDto> updateAdmin(@PathVariable Long id, @Valid @RequestBody AdminDto adminDto) {
-        Admin admin = convertToEntity(adminDto);
-        Admin updatedAdmin = adminService.updateAdmin(id, admin);
-        if (updatedAdmin != null) {
-            return ResponseEntity.ok(convertToDto(updatedAdmin));
+        AdminDto updatedAdminDto = adminService.updateAdmin(id, adminDto);
+        if (updatedAdminDto != null) {
+            return ResponseEntity.ok(updatedAdminDto);
         } else {
             throw new RecordNotFoundException("Admin with ID " + id + " not found.");
         }
@@ -66,22 +59,7 @@ public class AdminController {
         adminService.deleteAdmin(id);
         return ResponseEntity.noContent().build();
     }
-
-    private AdminDto convertToDto(Admin admin) {
-        AdminDto adminDto = new AdminDto();
-        adminDto.setId(admin.getId());
-        adminDto.setUsername(admin.getUsername());
-        adminDto.setEmail(admin.getEmail());
-        return adminDto;
-    }
-
-    private Admin convertToEntity(AdminDto adminDto) {
-        Admin admin = new Admin();
-        admin.setId(adminDto.getId());
-        admin.setUsername(adminDto.getUsername());
-        admin.setEmail(adminDto.getEmail());
-        return admin;
-    }
 }
+
 
 
