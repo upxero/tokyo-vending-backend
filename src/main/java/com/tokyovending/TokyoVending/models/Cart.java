@@ -1,6 +1,8 @@
 package com.tokyovending.TokyoVending.models;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -12,7 +14,7 @@ public class Cart {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", unique = true, nullable = true)
     private User user;
 
     @ManyToMany
@@ -21,7 +23,20 @@ public class Cart {
             joinColumns = @JoinColumn(name = "cart_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-    private List<Product> products;
+    private List<Product> products = new ArrayList<>();
+
+    public void addProduct(Product product) {
+        if (products == null) {
+            products = new ArrayList<>();
+        }
+        products.add(product);
+    }
+
+    public void removeProduct(Product product) {
+        if (products != null) {
+            products.remove(product);
+        }
+    }
 
     public Long getId() {
         return id;

@@ -3,6 +3,7 @@ package com.tokyovending.TokyoVending.controllers;
 import com.tokyovending.TokyoVending.dtos.CartDto;
 import com.tokyovending.TokyoVending.exceptions.RecordNotFoundException;
 import com.tokyovending.TokyoVending.models.Cart;
+import com.tokyovending.TokyoVending.models.Product;
 import com.tokyovending.TokyoVending.services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -77,6 +78,18 @@ public class CartController {
         cart.setUser(cartDto.getUser());
         cart.setProducts(cartDto.getProducts());
         return cart;
+    }
+
+    @PostMapping("/{cartId}/add-product/{productId}")
+    public ResponseEntity<CartDto> addProductToCart(@PathVariable Long cartId, @PathVariable Long productId) {
+        Cart updatedCart = cartService.addProductToCart(cartId, productId);
+        return ResponseEntity.ok(convertToDto(updatedCart));
+    }
+
+    @DeleteMapping("/{cartId}/remove-product/{productId}")
+    public ResponseEntity<CartDto> removeProductFromCart(@PathVariable Long cartId, @PathVariable Long productId) {
+        Cart updatedCart = cartService.removeProductFromCart(cartId, productId);
+        return ResponseEntity.ok(convertToDto(updatedCart));
     }
 }
 
