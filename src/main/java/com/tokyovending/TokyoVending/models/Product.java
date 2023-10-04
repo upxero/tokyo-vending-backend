@@ -31,10 +31,6 @@ public class Product {
     @JsonBackReference(value="category-product")
     private Category category;
 
-
-    @ManyToMany(mappedBy = "favoriteProducts")
-    private List<User> favoritedByUsers;
-
     public Long getId() {
         return id;
     }
@@ -83,13 +79,6 @@ public class Product {
         this.category = category;
     }
 
-    public List<User> getFavoritedByUsers() {
-        return favoritedByUsers;
-    }
-
-    public void setFavoritedByUsers(List<User> favoritedByUsers) {
-        this.favoritedByUsers = favoritedByUsers;
-    }
 }
 
 
