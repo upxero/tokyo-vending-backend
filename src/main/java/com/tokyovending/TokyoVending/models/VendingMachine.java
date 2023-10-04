@@ -19,10 +19,9 @@ public class VendingMachine {
     @Column(nullable = false)
     private boolean isOpen;
 
-    @OneToMany(mappedBy = "vendingMachine")
+    @OneToMany(mappedBy = "vendingMachine", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value="vendingmachine-product")
     private List<Product> products = new ArrayList<>();
-
 
     public Long getId() {
         return id;

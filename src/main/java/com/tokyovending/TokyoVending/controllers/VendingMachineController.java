@@ -59,5 +59,14 @@ public class VendingMachineController {
         VendingMachineDto updatedVendingMachineDto = vendingMachineService.addProductToVendingMachine(vmId, productId);
         return ResponseEntity.ok(updatedVendingMachineDto);
     }
+
+    @DeleteMapping("/{vmId}/remove-product/{productId}")
+    public ResponseEntity<VendingMachineDto> removeProductFromVendingMachine(@PathVariable Long vmId, @PathVariable Long productId) {
+        VendingMachineDto updatedVendingMachineDto = vendingMachineService.removeProductFromVendingMachine(vmId, productId);
+        if (updatedVendingMachineDto == null) {
+            throw new RecordNotFoundException("Failed to remove product with ID " + productId + " from VendingMachine with ID " + vmId);
+        }
+        return ResponseEntity.ok(updatedVendingMachineDto);
+    }
 }
 

@@ -5,6 +5,7 @@ import com.tokyovending.TokyoVending.exceptions.RecordNotFoundException;
 import com.tokyovending.TokyoVending.models.Product;
 import com.tokyovending.TokyoVending.repositories.ProductRepository;
 import com.tokyovending.TokyoVending.utils.ProductConverter;
+import jakarta.transaction.Transactional;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,6 +50,7 @@ public class ProductService {
         return productRepository.save(existingProduct);
     }
 
+    @Transactional
     public void deleteProduct(Long id) {
         if (!productRepository.existsById(id)) {
             throw new RecordNotFoundException("Product with ID " + id + " not found.");

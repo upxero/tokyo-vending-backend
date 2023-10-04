@@ -7,6 +7,7 @@ import com.tokyovending.TokyoVending.exceptions.RecordNotFoundException;
 import com.tokyovending.TokyoVending.exceptions.EntityNotFoundException;
 import com.tokyovending.TokyoVending.models.VendingMachine;
 import com.tokyovending.TokyoVending.repositories.VendingMachineRepository;
+import org.hibernate.Hibernate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,9 @@ public class VendingMachineService {
     private VendingMachineRepository vendingMachineRepository;
     @Autowired
     private ProductRepository productRepository;
-
+    private void initializeProducts(VendingMachine vendingMachine) {
+        Hibernate.initialize(vendingMachine.getProducts());
+    }
 
     public List<VendingMachineDto> getAllVendingMachines() {
         List<VendingMachine> vendingMachines = vendingMachineRepository.findAll();
@@ -52,6 +55,7 @@ public class VendingMachineService {
         return convertToDto(updatedVendingMachine);
     }
 
+    @Transactional
     public void deleteVendingMachine(Long id) {
         if (!vendingMachineRepository.existsById(id)) {
             throw new RecordNotFoundException("VendingMachine with ID " + id + " not found.");
@@ -79,6 +83,7 @@ public class VendingMachineService {
         vendingMachine.setOpen(vendingMachineDto.isOpen());
     }
 
+    @Transactional
     public VendingMachineDto addProductToVendingMachine(Long vmId, Long productId) {
         VendingMachine vendingMachine = vendingMachineRepository.findById(vmId)
                 .orElseThrow(() -> new EntityNotFoundException("VendingMachine not found"));
@@ -92,6 +97,20 @@ public class VendingMachineService {
         return convertToDto(updatedVendingMachine);
     }
 
+    @Transactional
+    public VendingMachineDto removeProductFromVendingMachine(Long vmId, Long productId) {
+        VendingMachine vendingMachine = vendingMachineRepository.findById(vmId)
+                .orElseThrow(() -> new RecordNotFoundException("VendingMachine with ID " + vmId + " not found."));
+        initializeProducts(vendingMachine);
+        boolean removed = vendingMachine.getProducts().removeIf(product -> product.getId().equals(productId));
+
+        if (!removed) {
+            throw new RecordNotFoundException("Product with ID " + productId + " not found in VendingMachine with ID " + vmId);
+        }
+
+        VendingMachine updatedVendingMachine = vendingMachineRepository.save(vendingMachine);
+        return convertToDto(updatedVendingMachine);
+    }
 }
 
 

@@ -64,6 +64,16 @@ public class CategoryController {
         CategoryDto updatedCategoryDto = categoryService.addProductToCategory(categoryId, productId);
         return ResponseEntity.ok(updatedCategoryDto);
     }
+
+    @DeleteMapping("/{categoryId}/remove-product/{productId}")
+    public ResponseEntity<CategoryDto> removeProductFromCategory(@PathVariable Long categoryId, @PathVariable Long productId) {
+        CategoryDto updatedCategoryDto = categoryService.removeProductFromCategory(categoryId, productId);
+        if (updatedCategoryDto == null) {
+            throw new RecordNotFoundException("Failed to remove product with ID " + productId + " from Category with ID " + categoryId);
+        }
+        return ResponseEntity.ok(updatedCategoryDto);
+    }
+
 }
 
 

@@ -69,6 +69,7 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/vending-machines/{id}").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/vending-machines/{id}").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/vending-machines/{vmId}/add-product/{productId}").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/vending-machines/{vmId}/remove-product/{productId}").hasRole("ADMIN")
 
                 .requestMatchers(HttpMethod.POST, "/categories").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/categories").hasAnyRole("ADMIN", "USER")
@@ -76,6 +77,7 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/categories/{id}").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/categories/{id}").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/categories/{categoryId}/add-product/{productId}").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/categories/{categoryId}/remove-product/{productId}").hasRole("ADMIN")
 
                 .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/products").hasAnyRole("ADMIN", "USER")

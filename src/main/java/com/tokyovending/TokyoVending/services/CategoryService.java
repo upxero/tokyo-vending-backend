@@ -7,6 +7,7 @@ import com.tokyovending.TokyoVending.exceptions.RecordNotFoundException;
 import com.tokyovending.TokyoVending.exceptions.EntityNotFoundException;
 import com.tokyovending.TokyoVending.models.Category;
 import com.tokyovending.TokyoVending.repositories.CategoryRepository;
+import org.hibernate.Hibernate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,9 @@ public class CategoryService {
     private CategoryRepository categoryRepository;
     @Autowired
     private ProductRepository productRepository;
+    private void initializeProducts(Category category) {
+        Hibernate.initialize(category.getProducts());
+    }
 
     public List<CategoryDto> getAllCategories() {
         List<Category> categories = categoryRepository.findAll();
@@ -51,6 +55,7 @@ public class CategoryService {
         return convertToDto(updatedCategory);
     }
 
+    @Transactional
     public void deleteCategory(Long id) {
         if (!categoryRepository.existsById(id)) {
             throw new RecordNotFoundException("Category with ID " + id + " not found.");
@@ -76,6 +81,7 @@ public class CategoryService {
         category.setName(categoryDto.getName());
     }
 
+    @Transactional
     public CategoryDto addProductToCategory(Long categoryId, Long productId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
@@ -84,6 +90,21 @@ public class CategoryService {
 
         product.setCategory(category);
         category.getProducts().add(product);
+
+        Category updatedCategory = categoryRepository.save(category);
+        return convertToDto(updatedCategory);
+    }
+
+    @Transactional
+    public CategoryDto removeProductFromCategory(Long categoryId, Long productId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new RecordNotFoundException("Category with ID " + categoryId + " not found."));
+        initializeProducts(category);
+        boolean removed = category.getProducts().removeIf(product -> product.getId().equals(productId));
+
+        if (!removed) {
+            throw new RecordNotFoundException("Product with ID " + productId + " not found in Category with ID " + categoryId);
+        }
 
         Category updatedCategory = categoryRepository.save(category);
         return convertToDto(updatedCategory);
