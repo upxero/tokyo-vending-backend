@@ -80,16 +80,15 @@ public class UserController {
             return ResponseEntity.ok().body(userService.getAuthorities(username));
         }
 
-        @PostMapping(value = "/{username}/authorities")
-        public ResponseEntity<Object> addUserAuthority(@PathVariable("username") String username, @RequestBody Map<String, Object> fields) {
-            try {
-                String authorityName = (String) fields.get("authority");
-                userService.addAuthority(username, authorityName);
-                return ResponseEntity.noContent().build();
-            } catch (Exception ex) {
-                throw new BadRequestException(ex.getMessage());
-            }
+    @PostMapping(value = "/{username}/authorities")
+    public ResponseEntity<Object> addUserAuthority(@PathVariable("username") String username, @RequestBody Map<String, Object> fields) {
+        String authorityName = (String) fields.get("authority");
+        if (authorityName == null || authorityName.isEmpty()) {
+            throw new BadRequestException("Authority cannot be empty.");
         }
+        userService.addAuthority(username, authorityName);
+        return ResponseEntity.noContent().build();
+    }
 
         @DeleteMapping(value = "/{username}/authorities/{authority}")
         public ResponseEntity<Object> deleteUserAuthority(@PathVariable("username") String username, @PathVariable("authority") String authority) {

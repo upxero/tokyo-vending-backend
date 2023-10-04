@@ -36,11 +36,7 @@ public class CartController {
     @GetMapping("/{id}")
     public ResponseEntity<CartDto> getCartById(@PathVariable Long id) {
         Cart cart = cartService.getCartById(id);
-        if (cart != null) {
-            return ResponseEntity.ok(convertToDto(cart));
-        } else {
-            throw new RecordNotFoundException("Cart with ID " + id + " not found.");
-        }
+        return ResponseEntity.ok(convertToDto(cart));
     }
 
     @PostMapping

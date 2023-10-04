@@ -1,5 +1,6 @@
 package com.tokyovending.TokyoVending.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -22,11 +23,14 @@ public class Product {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vending_machine_id")
+    @JsonBackReference(value="vendingmachine-product")
     private VendingMachine vendingMachine;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
+    @JsonBackReference(value="category-product")
     private Category category;
+
 
     @ManyToMany(mappedBy = "favoriteProducts")
     private List<User> favoritedByUsers;

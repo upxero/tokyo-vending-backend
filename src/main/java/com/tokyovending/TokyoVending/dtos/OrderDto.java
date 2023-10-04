@@ -8,6 +8,8 @@ public class OrderDto {
     private List<ProductDto> products;
     private LocalDateTime orderDateTime;
     private boolean completed;
+    private UserDto user;
+    private VendingMachineDto vendingMachine;
 
     public Long getId() {
         return id;
@@ -39,6 +41,22 @@ public class OrderDto {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public UserDto getUser() {
+        return user;
+    }
+
+    public void setUser(UserDto user) {
+        this.user = user;
+    }
+
+    public VendingMachineDto getVendingMachine() {
+        return vendingMachine;
+    }
+
+    public void setVendingMachine(VendingMachineDto vendingMachine) {
+        this.vendingMachine = vendingMachine;
     }
 }
 

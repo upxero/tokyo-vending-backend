@@ -30,9 +30,6 @@ public class VendingMachineController {
     @GetMapping("/{id}")
     public ResponseEntity<VendingMachineDto> getVendingMachineById(@PathVariable Long id) {
         VendingMachineDto vendingMachineDto = vendingMachineService.getVendingMachineById(id);
-        if (vendingMachineDto == null) {
-            throw new RecordNotFoundException("VendingMachine with ID " + id + " not found.");
-        }
         return ResponseEntity.ok(vendingMachineDto);
     }
 
@@ -55,6 +52,12 @@ public class VendingMachineController {
     public ResponseEntity<Void> deleteVendingMachine(@PathVariable Long id) {
         vendingMachineService.deleteVendingMachine(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{vmId}/add-product/{productId}")
+    public ResponseEntity<VendingMachineDto> addProductToVendingMachine(@PathVariable Long vmId, @PathVariable Long productId) {
+        VendingMachineDto updatedVendingMachineDto = vendingMachineService.addProductToVendingMachine(vmId, productId);
+        return ResponseEntity.ok(updatedVendingMachineDto);
     }
 }
 

@@ -32,12 +32,10 @@ public class CartService {
 
     public Cart updateCart(Long id, Cart cart) {
         Cart existingCart = getCartById(id);
-        if (existingCart != null) {
-            existingCart.setUser(cart.getUser());
-            return cartRepository.save(existingCart);
-        }
-        return null;
+        existingCart.setUser(cart.getUser());
+        return cartRepository.save(existingCart);
     }
+
 
     public void deleteCart(Long id) {
         cartRepository.deleteById(id);

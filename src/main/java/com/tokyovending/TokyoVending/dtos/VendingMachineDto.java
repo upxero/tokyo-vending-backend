@@ -7,7 +7,8 @@ import java.util.List;
 public class VendingMachineDto {
     private Long id;
     private String location;
-    private Long adminId;
+
+    private boolean isOpen;
     private List<Product> products;
 
     public Long getId() {
@@ -26,12 +27,12 @@ public class VendingMachineDto {
         this.location = location;
     }
 
-    public Long getAdminId() {
-        return adminId;
+    public boolean isOpen() {
+        return isOpen;
     }
 
-    public void setAdminId(Long adminId) {
-        this.adminId = adminId;
+    public void setOpen(boolean isOpen) {
+        this.isOpen = isOpen;
     }
 
     public List<Product> getProducts() {
