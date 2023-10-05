@@ -3,17 +3,13 @@ package com.tokyovending.TokyoVending.services;
 import com.tokyovending.TokyoVending.exceptions.ProductNotFoundException;
 import com.tokyovending.TokyoVending.exceptions.RecordNotFoundException;
 import com.tokyovending.TokyoVending.models.Cart;
-import com.tokyovending.TokyoVending.models.Order;
 import com.tokyovending.TokyoVending.models.Product;
-import com.tokyovending.TokyoVending.models.VendingMachine;
 import com.tokyovending.TokyoVending.repositories.CartRepository;
 import com.tokyovending.TokyoVending.repositories.ProductRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,13 +17,11 @@ public class CartService {
 
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
-    private final OrderService orderService;
 
     @Autowired
-    public CartService(CartRepository cartRepository, ProductRepository productRepository, OrderService orderService) {
+    public CartService(CartRepository cartRepository, ProductRepository productRepository) {
         this.cartRepository = cartRepository;
         this.productRepository = productRepository;
-        this.orderService = orderService;
     }
 
     public List<Cart> getAllCarts() {
@@ -53,8 +47,8 @@ public class CartService {
     }
 
     @Transactional
-    public Cart addProductToCart(Long cartId, Long productId) {
-        Cart cart = getCartById(cartId);
+    public Cart addProductToCart(Long id, Long productId) {
+        Cart cart = getCartById(id);
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException("Product with ID " + productId + " not found"));
         productRepository.save(product);
@@ -64,36 +58,17 @@ public class CartService {
     }
 
     @Transactional
-    public Cart removeProductFromCart(Long cartId, Long productId) {
-        Cart cart = getCartById(cartId);
+    public Cart removeProductFromCart(Long id, Long productId) {
+        Cart cart = getCartById(id);
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException("Product with ID " + productId + " not found"));
-        productRepository.save(product);
 
-        cart.removeProduct(product);
-        return cartRepository.save(cart);
-    }
-
-    @Transactional
-    public Order createOrderFromCart(Long cartId, VendingMachine vendingMachine) {
-        Cart cart = getCartById(cartId);
-        if (cart.getProducts().isEmpty()) {
-            throw new RuntimeException("Kan geen bestelling maken van een lege winkelwagen");
+        if (cart.getProducts() != null && cart.getProducts().contains(product)) {
+            cart.removeProduct(product);
+            return cartRepository.save(cart);
+        } else {
+            return cart;
         }
-
-        Order order = new Order();
-        order.setUser(cart.getUser());
-        order.setProducts(new ArrayList<>(cart.getProducts()));
-        order.setOrderDateTime(LocalDateTime.now());
-        order.setCompleted(false);
-        order.setVendingMachine(vendingMachine);
-
-        Order createdOrder = orderService.createOrder(order);
-
-        cart.getProducts().clear();
-        cartRepository.save(cart);
-
-        return createdOrder;
     }
 }
 

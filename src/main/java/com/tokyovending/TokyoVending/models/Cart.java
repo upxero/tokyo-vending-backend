@@ -33,7 +33,7 @@ public class Cart {
     }
 
     public void removeProduct(Product product) {
-        if (products != null) {
+        if (products != null && products.contains(product)) {
             products.remove(product);
         }
     }

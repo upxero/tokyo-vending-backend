@@ -56,7 +56,7 @@ public class OrderController {
         if (updatedOrder != null) {
             return ResponseEntity.ok(convertToDto(updatedOrder));
         } else {
-            throw new RecordNotFoundException("Order met ID " + id + " niet gevonden.");
+            throw new RecordNotFoundException("Order with ID " + id + " not found.");
         }
     }
 

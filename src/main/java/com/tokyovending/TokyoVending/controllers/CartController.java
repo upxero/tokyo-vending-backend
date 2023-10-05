@@ -3,7 +3,6 @@ package com.tokyovending.TokyoVending.controllers;
 import com.tokyovending.TokyoVending.dtos.CartDto;
 import com.tokyovending.TokyoVending.exceptions.RecordNotFoundException;
 import com.tokyovending.TokyoVending.models.Cart;
-import com.tokyovending.TokyoVending.models.Product;
 import com.tokyovending.TokyoVending.services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -80,15 +79,15 @@ public class CartController {
         return cart;
     }
 
-    @PostMapping("/{cartId}/add-product/{productId}")
-    public ResponseEntity<CartDto> addProductToCart(@PathVariable Long cartId, @PathVariable Long productId) {
-        Cart updatedCart = cartService.addProductToCart(cartId, productId);
+    @PostMapping("/{id}/add-product/{productId}")
+    public ResponseEntity<CartDto> addProductToCart(@PathVariable Long id, @PathVariable Long productId) {
+        Cart updatedCart = cartService.addProductToCart(id, productId);
         return ResponseEntity.ok(convertToDto(updatedCart));
     }
 
-    @DeleteMapping("/{cartId}/remove-product/{productId}")
-    public ResponseEntity<CartDto> removeProductFromCart(@PathVariable Long cartId, @PathVariable Long productId) {
-        Cart updatedCart = cartService.removeProductFromCart(cartId, productId);
+    @DeleteMapping("/{id}/remove-product/{productId}")
+    public ResponseEntity<CartDto> removeProductFromCart(@PathVariable Long id, @PathVariable Long productId) {
+        Cart updatedCart = cartService.removeProductFromCart(id, productId);
         return ResponseEntity.ok(convertToDto(updatedCart));
     }
 }

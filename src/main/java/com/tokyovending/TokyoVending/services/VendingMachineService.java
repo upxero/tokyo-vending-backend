@@ -84,8 +84,8 @@ public class VendingMachineService {
     }
 
     @Transactional
-    public VendingMachineDto addProductToVendingMachine(Long vmId, Long productId) {
-        VendingMachine vendingMachine = vendingMachineRepository.findById(vmId)
+    public VendingMachineDto addProductToVendingMachine(Long id, Long productId) {
+        VendingMachine vendingMachine = vendingMachineRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("VendingMachine not found"));
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found"));
@@ -98,14 +98,14 @@ public class VendingMachineService {
     }
 
     @Transactional
-    public VendingMachineDto removeProductFromVendingMachine(Long vmId, Long productId) {
-        VendingMachine vendingMachine = vendingMachineRepository.findById(vmId)
-                .orElseThrow(() -> new RecordNotFoundException("VendingMachine with ID " + vmId + " not found."));
+    public VendingMachineDto removeProductFromVendingMachine(Long id, Long productId) {
+        VendingMachine vendingMachine = vendingMachineRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException("VendingMachine with ID " + id + " not found."));
         initializeProducts(vendingMachine);
         boolean removed = vendingMachine.getProducts().removeIf(product -> product.getId().equals(productId));
 
         if (!removed) {
-            throw new RecordNotFoundException("Product with ID " + productId + " not found in VendingMachine with ID " + vmId);
+            throw new RecordNotFoundException("Product with ID " + productId + " not found in VendingMachine with ID " + id);
         }
 
         VendingMachine updatedVendingMachine = vendingMachineRepository.save(vendingMachine);

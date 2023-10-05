@@ -54,17 +54,17 @@ public class VendingMachineController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/{vmId}/add-product/{productId}")
-    public ResponseEntity<VendingMachineDto> addProductToVendingMachine(@PathVariable Long vmId, @PathVariable Long productId) {
-        VendingMachineDto updatedVendingMachineDto = vendingMachineService.addProductToVendingMachine(vmId, productId);
+    @PostMapping("/{id}/add-product/{productId}")
+    public ResponseEntity<VendingMachineDto> addProductToVendingMachine(@PathVariable Long id, @PathVariable Long productId) {
+        VendingMachineDto updatedVendingMachineDto = vendingMachineService.addProductToVendingMachine(id, productId);
         return ResponseEntity.ok(updatedVendingMachineDto);
     }
 
-    @DeleteMapping("/{vmId}/remove-product/{productId}")
-    public ResponseEntity<VendingMachineDto> removeProductFromVendingMachine(@PathVariable Long vmId, @PathVariable Long productId) {
-        VendingMachineDto updatedVendingMachineDto = vendingMachineService.removeProductFromVendingMachine(vmId, productId);
+    @DeleteMapping("/{id}/remove-product/{productId}")
+    public ResponseEntity<VendingMachineDto> removeProductFromVendingMachine(@PathVariable Long id, @PathVariable Long productId) {
+        VendingMachineDto updatedVendingMachineDto = vendingMachineService.removeProductFromVendingMachine(id, productId);
         if (updatedVendingMachineDto == null) {
-            throw new RecordNotFoundException("Failed to remove product with ID " + productId + " from VendingMachine with ID " + vmId);
+            throw new RecordNotFoundException("Failed to remove product with ID " + productId + " from VendingMachine with ID " + id);
         }
         return ResponseEntity.ok(updatedVendingMachineDto);
     }

@@ -82,8 +82,8 @@ public class CategoryService {
     }
 
     @Transactional
-    public CategoryDto addProductToCategory(Long categoryId, Long productId) {
-        Category category = categoryRepository.findById(categoryId)
+    public CategoryDto addProductToCategory(Long id, Long productId) {
+        Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found"));
@@ -96,14 +96,14 @@ public class CategoryService {
     }
 
     @Transactional
-    public CategoryDto removeProductFromCategory(Long categoryId, Long productId) {
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new RecordNotFoundException("Category with ID " + categoryId + " not found."));
+    public CategoryDto removeProductFromCategory(Long id, Long productId) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException("Category with ID " + id + " not found."));
         initializeProducts(category);
         boolean removed = category.getProducts().removeIf(product -> product.getId().equals(productId));
 
         if (!removed) {
-            throw new RecordNotFoundException("Product with ID " + productId + " not found in Category with ID " + categoryId);
+            throw new RecordNotFoundException("Product with ID " + productId + " not found in Category with ID " + id);
         }
 
         Category updatedCategory = categoryRepository.save(category);

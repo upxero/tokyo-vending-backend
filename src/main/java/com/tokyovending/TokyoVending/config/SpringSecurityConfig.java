@@ -68,16 +68,16 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/vending-machines/{id}").hasAnyRole("ADMIN", "USER")
                 .requestMatchers(HttpMethod.PUT, "/vending-machines/{id}").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/vending-machines/{id}").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/vending-machines/{vmId}/add-product/{productId}").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/vending-machines/{vmId}/remove-product/{productId}").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/vending-machines/{id}/add-product/{productId}").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/vending-machines/{id}/remove-product/{productId}").hasRole("ADMIN")
 
                 .requestMatchers(HttpMethod.POST, "/categories").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/categories").hasAnyRole("ADMIN", "USER")
                 .requestMatchers(HttpMethod.GET, "/categories/{id}").hasAnyRole("ADMIN", "USER")
                 .requestMatchers(HttpMethod.PUT, "/categories/{id}").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/categories/{id}").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/categories/{categoryId}/add-product/{productId}").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/categories/{categoryId}/remove-product/{productId}").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/categories/{id}/add-product/{productId}").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/categories/{id}/remove-product/{productId}").hasRole("ADMIN")
 
                 .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/products").hasAnyRole("ADMIN", "USER")
@@ -93,8 +93,8 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/carts/{id}").hasAnyRole("ADMIN", "USER")
                 .requestMatchers(HttpMethod.PUT, "/carts/{id}").hasAnyRole("ADMIN", "USER")
                 .requestMatchers(HttpMethod.DELETE, "/carts/{id}").hasAnyRole("ADMIN", "USER")
-                .requestMatchers(HttpMethod.POST, "/carts/{cartId}/add-product/{productId}").hasAnyRole("ADMIN", "USER")
-                .requestMatchers(HttpMethod.DELETE, "/carts/{cartId}/remove-product/{productId}").hasAnyRole("ADMIN", "USER")
+                .requestMatchers(HttpMethod.POST, "/carts/{id}/add-product/{productId}").hasAnyRole("ADMIN", "USER")
+                .requestMatchers(HttpMethod.DELETE, "/carts/{id}/remove-product/{productId}").hasAnyRole("ADMIN", "USER")
 
                 .requestMatchers(HttpMethod.POST, "/orders").hasAnyRole("ADMIN", "USER")
                 .requestMatchers(HttpMethod.GET, "/orders").hasAnyRole("ADMIN", "USER")
@@ -104,6 +104,9 @@ public class SpringSecurityConfig {
 
                 .requestMatchers(HttpMethod.GET, "/carts/{id}/amount").hasAnyRole("ADMIN", "USER")
                 .requestMatchers(HttpMethod.GET, "/orders/{id}/totalAmount").hasAnyRole("ADMIN", "USER")
+
+                .requestMatchers(HttpMethod.POST, "/files/upload-profile-pic/{username}").hasAnyRole("ADMIN", "USER")
+                .requestMatchers(HttpMethod.DELETE, "/files/delete-profile-pic/{username}").hasAnyRole("ADMIN", "USER")
 
                 // Je mag meerdere paths tegelijk definieren
 
