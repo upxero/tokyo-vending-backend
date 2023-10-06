@@ -1,5 +1,7 @@
 package com.tokyovending.TokyoVending.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -14,8 +16,10 @@ public class Cart {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "user_id", unique = true, nullable = true)
+    @JoinColumn(name = "user_id", unique = true, nullable = false)
+    @JsonIgnore
     private User user;
+
 
     @ManyToMany
     @JoinTable(

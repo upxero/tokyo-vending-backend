@@ -1,5 +1,6 @@
 package com.tokyovending.TokyoVending.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class VendingMachine {
     private boolean isOpen;
 
     @OneToMany(mappedBy = "vendingMachine", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference(value="vendingmachine-product")
+    @JsonIgnore
     private List<Product> products = new ArrayList<>();
 
     public Long getId() {

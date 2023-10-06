@@ -33,8 +33,9 @@ public class User {
     @JsonIgnore
     private Cart cart;
 
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonIgnore
     private List<Order> orders;
 
     @OneToMany(

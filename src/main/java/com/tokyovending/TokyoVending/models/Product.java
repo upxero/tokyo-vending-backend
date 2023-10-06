@@ -1,6 +1,7 @@
 package com.tokyovending.TokyoVending.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -22,12 +23,12 @@ public class Product {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vending_machine_id")
-    @JsonBackReference(value="vendingmachine-product")
+    @JsonIgnore
     private VendingMachine vendingMachine;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
-    @JsonBackReference(value="category-product")
+    @JsonIgnore
     private Category category;
 
     public Long getId() {
