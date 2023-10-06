@@ -35,13 +35,13 @@ public class VendingMachineController {
 
     @PostMapping
     public ResponseEntity<VendingMachineDto> createVendingMachine(@Valid @RequestBody VendingMachineDto vendingMachineDto) {
-        VendingMachineDto createdVendingMachineDto = vendingMachineService.createVendingMachine(vendingMachineDto);
+        VendingMachineDto createdVendingMachineDto = vendingMachineService.createVendingMachine(vendingMachineDto, true);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdVendingMachineDto);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<VendingMachineDto> updateVendingMachine(@PathVariable Long id, @Valid @RequestBody VendingMachineDto vendingMachineDto) {
-        VendingMachineDto updatedVendingMachineDto = vendingMachineService.updateVendingMachine(id, vendingMachineDto);
+        VendingMachineDto updatedVendingMachineDto = vendingMachineService.updateVendingMachine(id, vendingMachineDto, true);
         if (updatedVendingMachineDto == null) {
             throw new RecordNotFoundException("VendingMachine with ID " + id + " not found.");
         }
@@ -67,6 +67,12 @@ public class VendingMachineController {
             throw new RecordNotFoundException("Failed to remove product with ID " + productId + " from VendingMachine with ID " + id);
         }
         return ResponseEntity.ok(updatedVendingMachineDto);
+    }
+
+    @PutMapping("/{id}/change-status")
+    public ResponseEntity<Void> changeVendingMachineStatus(@PathVariable Long id, @RequestParam("isOpen") boolean isOpen) {
+        vendingMachineService.changeStatus(id, isOpen);
+        return ResponseEntity.noContent().build();
     }
 }
 

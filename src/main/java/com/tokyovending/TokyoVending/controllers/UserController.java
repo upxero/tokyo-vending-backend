@@ -2,10 +2,11 @@ package com.tokyovending.TokyoVending.controllers;
 
 import com.tokyovending.TokyoVending.dtos.UserDto;
 import com.tokyovending.TokyoVending.exceptions.BadRequestException;
+import com.tokyovending.TokyoVending.services.OrderService;
 import com.tokyovending.TokyoVending.services.UserService;
 import com.tokyovending.TokyoVending.utils.FieldError;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import jakarta.validation.Valid;
 
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +24,8 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    @Autowired
+    private OrderService orderService;
 
     private final FieldError fieldError = new FieldError();
 
@@ -88,6 +92,29 @@ public class UserController {
     public ResponseEntity<Object> deleteUserAuthority(@PathVariable("username") String username, @PathVariable("authority") String authority) {
         userService.removeAuthority(username, authority);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/download-order-history/{username}")
+    public ResponseEntity<byte[]> downloadOrderHistory(@PathVariable String username) {
+        String csvData = orderService.getUserOrderHistoryAsCsv(username);
+
+        byte[] csvBytes = csvData.getBytes(StandardCharsets.UTF_8);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.TEXT_PLAIN);
+        headers.setContentDisposition(ContentDisposition.builder("attachment").filename("order_history.csv").build());
+
+        return new ResponseEntity<>(csvBytes, headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/export/all-orders")
+    public ResponseEntity<String> downloadAllOrders() {
+        String csv = orderService.exportAllOrdersToCSV();
+        String filename = "all_orders.csv";
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
+                .body(csv);
     }
 }
 

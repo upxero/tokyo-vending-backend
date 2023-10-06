@@ -40,17 +40,19 @@ public class VendingMachineService {
         return convertToDto(vendingMachine);
     }
 
-    public VendingMachineDto createVendingMachine(VendingMachineDto vendingMachineDto) {
+    public VendingMachineDto createVendingMachine(VendingMachineDto vendingMachineDto, boolean isOpen) {
         VendingMachine vendingMachine = convertToEntity(vendingMachineDto);
+        vendingMachine.setOpen(isOpen);
         VendingMachine savedVendingMachine = vendingMachineRepository.save(vendingMachine);
         return convertToDto(savedVendingMachine);
     }
 
-    public VendingMachineDto updateVendingMachine(Long id, VendingMachineDto vendingMachineDto) {
+    public VendingMachineDto updateVendingMachine(Long id, VendingMachineDto vendingMachineDto, boolean isOpen) {
         VendingMachine existingVendingMachine = vendingMachineRepository.findById(id).orElseThrow(() ->
                 new RecordNotFoundException("VendingMachine with ID " + id + " not found.")
         );
         updateEntityFromDto(existingVendingMachine, vendingMachineDto);
+        existingVendingMachine.setOpen(isOpen);
         VendingMachine updatedVendingMachine = vendingMachineRepository.save(existingVendingMachine);
         return convertToDto(updatedVendingMachine);
     }
@@ -110,6 +112,14 @@ public class VendingMachineService {
 
         VendingMachine updatedVendingMachine = vendingMachineRepository.save(vendingMachine);
         return convertToDto(updatedVendingMachine);
+    }
+
+    public void changeStatus(Long id, boolean isOpen) {
+        VendingMachine vendingMachine = vendingMachineRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException("VendingMachine with ID " + id + " not found."));
+
+        vendingMachine.setOpen(isOpen);
+        vendingMachineRepository.save(vendingMachine);
     }
 }
 

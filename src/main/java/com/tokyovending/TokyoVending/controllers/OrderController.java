@@ -103,6 +103,9 @@ public class OrderController {
     private UserDto convertUserToDto(User user) {
         UserDto userDto = new UserDto();
         userDto.setUsername(user.getUsername());
+        userDto.setEmail(user.getEmail());
+        userDto.setEnabled(user.isEnabled());
+        userDto.setProfilePicture(user.getProfilePicture());
         return userDto;
     }
 
