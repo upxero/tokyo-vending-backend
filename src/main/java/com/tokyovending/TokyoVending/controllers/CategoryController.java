@@ -2,7 +2,6 @@ package com.tokyovending.TokyoVending.controllers;
 
 import com.tokyovending.TokyoVending.dtos.CategoryDto;
 import com.tokyovending.TokyoVending.exceptions.RecordNotFoundException;
-import com.tokyovending.TokyoVending.models.Category;
 import com.tokyovending.TokyoVending.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/categories")
@@ -26,18 +24,14 @@ public class CategoryController {
 
     @GetMapping
     public ResponseEntity<List<CategoryDto>> getAllCategories() {
-        List<Category> categories = categoryService.getAllCategories();
-        List<CategoryDto> categoryDtos = categories.stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(categoryDtos);
+        return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDto> getCategoryById(@PathVariable Long id) {
-        Category category = categoryService.getCategoryById(id);
-        if (category != null) {
-            return ResponseEntity.ok(convertToDto(category));
+        CategoryDto categoryDto = categoryService.getCategoryById(id);
+        if (categoryDto != null) {
+            return ResponseEntity.ok(categoryDto);
         } else {
             throw new RecordNotFoundException("Category with ID " + id + " not found.");
         }
@@ -45,17 +39,15 @@ public class CategoryController {
 
     @PostMapping
     public ResponseEntity<CategoryDto> createCategory(@Valid @RequestBody CategoryDto categoryDto) {
-        Category category = convertToEntity(categoryDto);
-        Category createdCategory = categoryService.createCategory(category);
-        return ResponseEntity.status(HttpStatus.CREATED).body(convertToDto(createdCategory));
+        CategoryDto createdCategoryDto = categoryService.createCategory(categoryDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdCategoryDto);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CategoryDto> updateCategory(@PathVariable Long id, @Valid @RequestBody CategoryDto categoryDto) {
-        Category category = convertToEntity(categoryDto);
-        Category updatedCategory = categoryService.updateCategory(id, category);
-        if (updatedCategory != null) {
-            return ResponseEntity.ok(convertToDto(updatedCategory));
+        CategoryDto updatedCategoryDto = categoryService.updateCategory(id, categoryDto);
+        if (updatedCategoryDto != null) {
+            return ResponseEntity.ok(updatedCategoryDto);
         } else {
             throw new RecordNotFoundException("Category with ID " + id + " not found.");
         }
@@ -67,19 +59,21 @@ public class CategoryController {
         return ResponseEntity.noContent().build();
     }
 
-    private CategoryDto convertToDto(Category category) {
-        CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setId(category.getId());
-        categoryDto.setName(category.getName());
-        return categoryDto;
+    @PostMapping("/{categoryId}/add-product/{productId}")
+    public ResponseEntity<CategoryDto> addProductToCategory(@PathVariable Long categoryId, @PathVariable Long productId) {
+        CategoryDto updatedCategoryDto = categoryService.addProductToCategory(categoryId, productId);
+        return ResponseEntity.ok(updatedCategoryDto);
     }
 
-    private Category convertToEntity(CategoryDto categoryDto) {
-        Category category = new Category();
-        category.setId(categoryDto.getId());
-        category.setName(categoryDto.getName());
-        return category;
+    @DeleteMapping("/{categoryId}/remove-product/{productId}")
+    public ResponseEntity<CategoryDto> removeProductFromCategory(@PathVariable Long categoryId, @PathVariable Long productId) {
+        CategoryDto updatedCategoryDto = categoryService.removeProductFromCategory(categoryId, productId);
+        if (updatedCategoryDto == null) {
+            throw new RecordNotFoundException("Failed to remove product with ID " + productId + " from Category with ID " + categoryId);
+        }
+        return ResponseEntity.ok(updatedCategoryDto);
     }
+
 }
 
 

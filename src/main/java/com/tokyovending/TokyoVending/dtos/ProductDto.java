@@ -5,6 +5,8 @@ public class ProductDto {
     private String name;
     private Double price;
     private String specifications;
+    private Long categoryId;
+    private Long vendingMachineId;
 
     public Long getId() {
         return id;
@@ -36,6 +38,22 @@ public class ProductDto {
 
     public void setSpecifications(String specifications) {
         this.specifications = specifications;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public Long getVendingMachineId() {
+        return vendingMachineId;
+    }
+
+    public void setVendingMachineId(Long vendingMachineId) {
+        this.vendingMachineId = vendingMachineId;
     }
 }
 

@@ -2,6 +2,7 @@ package com.tokyovending.TokyoVending.services;
 
 import com.tokyovending.TokyoVending.exceptions.RecordNotFoundException;
 import com.tokyovending.TokyoVending.models.Order;
+import com.tokyovending.TokyoVending.models.Product;
 import com.tokyovending.TokyoVending.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,5 +43,31 @@ public class OrderService {
     public void deleteOrder(Long id) {
         orderRepository.deleteById(id);
     }
-}
 
+    public String getUserOrderHistoryAsCsv(String username) {
+        List<Order> orders = orderRepository.findByUser_Username(username);
+        StringBuilder csvContent = new StringBuilder();
+        csvContent.append("OrderID,Product\n");
+        for (Order order : orders) {
+            for(Product product : order.getProducts()) {
+                csvContent.append(order.getId()).append(",");
+                csvContent.append(product.getName()).append("\n");
+            }
+        }
+        return csvContent.toString();
+    }
+
+    public String exportAllOrdersToCSV() {
+        List<Order> orders = getAllOrders();
+        StringBuilder csvContent = new StringBuilder();
+        csvContent.append("OrderID,Username,Product\n");
+        for (Order order : orders) {
+            for(Product product : order.getProducts()) {
+                csvContent.append(order.getId()).append(",");
+                csvContent.append(order.getUser().getUsername()).append(",");
+                csvContent.append(product.getName()).append("\n");
+            }
+        }
+        return csvContent.toString();
+    }
+}

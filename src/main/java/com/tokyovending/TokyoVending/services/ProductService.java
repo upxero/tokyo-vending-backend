@@ -1,8 +1,12 @@
 package com.tokyovending.TokyoVending.services;
 
+import com.tokyovending.TokyoVending.dtos.ProductDto;
 import com.tokyovending.TokyoVending.exceptions.RecordNotFoundException;
 import com.tokyovending.TokyoVending.models.Product;
 import com.tokyovending.TokyoVending.repositories.ProductRepository;
+import com.tokyovending.TokyoVending.utils.ProductConverter;
+import jakarta.transaction.Transactional;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,20 +15,27 @@ import java.util.List;
 @Service
 public class ProductService {
 
-    private final ProductRepository productRepository;
-
     @Autowired
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
+    private ProductRepository productRepository;
 
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
+    public ProductDto getProductDtoById(Long id) {
+        Product product = productRepository.findById(id).orElseThrow(() ->
+                new RecordNotFoundException("Product with ID " + id + " not found.")
+        );
+        Hibernate.initialize(product.getCategory());
+        Hibernate.initialize(product.getVendingMachine());
+        return ProductConverter.toDto(product);
+    }
+
+
     public Product getProductById(Long id) {
-        return productRepository.findById(id)
-                .orElseThrow(() -> new RecordNotFoundException("Product with ID '" + id + "' not found."));
+        return productRepository.findById(id).orElseThrow(() ->
+                new RecordNotFoundException("Product with ID " + id + " not found.")
+        );
     }
 
     public Product createProduct(Product product) {
@@ -39,9 +50,14 @@ public class ProductService {
         return productRepository.save(existingProduct);
     }
 
+    @Transactional
     public void deleteProduct(Long id) {
+        if (!productRepository.existsById(id)) {
+            throw new RecordNotFoundException("Product with ID " + id + " not found.");
+        }
         productRepository.deleteById(id);
     }
 }
+
 
 

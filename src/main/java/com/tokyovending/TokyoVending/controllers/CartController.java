@@ -36,11 +36,7 @@ public class CartController {
     @GetMapping("/{id}")
     public ResponseEntity<CartDto> getCartById(@PathVariable Long id) {
         Cart cart = cartService.getCartById(id);
-        if (cart != null) {
-            return ResponseEntity.ok(convertToDto(cart));
-        } else {
-            throw new RecordNotFoundException("Cart with ID " + id + " not found.");
-        }
+        return ResponseEntity.ok(convertToDto(cart));
     }
 
     @PostMapping
@@ -81,6 +77,18 @@ public class CartController {
         cart.setUser(cartDto.getUser());
         cart.setProducts(cartDto.getProducts());
         return cart;
+    }
+
+    @PostMapping("/{id}/add-product/{productId}")
+    public ResponseEntity<CartDto> addProductToCart(@PathVariable Long id, @PathVariable Long productId) {
+        Cart updatedCart = cartService.addProductToCart(id, productId);
+        return ResponseEntity.ok(convertToDto(updatedCart));
+    }
+
+    @DeleteMapping("/{id}/remove-product/{productId}")
+    public ResponseEntity<CartDto> removeProductFromCart(@PathVariable Long id, @PathVariable Long productId) {
+        Cart updatedCart = cartService.removeProductFromCart(id, productId);
+        return ResponseEntity.ok(convertToDto(updatedCart));
     }
 }
 

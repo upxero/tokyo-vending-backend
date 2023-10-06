@@ -1,7 +1,8 @@
 package com.tokyovending.TokyoVending.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -22,14 +23,13 @@ public class Product {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vending_machine_id")
+    @JsonIgnore
     private VendingMachine vendingMachine;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
+    @JsonIgnore
     private Category category;
-
-    @ManyToMany(mappedBy = "favoriteProducts")
-    private List<User> favoritedByUsers;
 
     public Long getId() {
         return id;
@@ -79,13 +79,6 @@ public class Product {
         this.category = category;
     }
 
-    public List<User> getFavoritedByUsers() {
-        return favoritedByUsers;
-    }
-
-    public void setFavoritedByUsers(List<User> favoritedByUsers) {
-        this.favoritedByUsers = favoritedByUsers;
-    }
 }
 
 

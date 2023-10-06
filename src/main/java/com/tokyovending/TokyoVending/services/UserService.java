@@ -8,7 +8,6 @@ import com.tokyovending.TokyoVending.models.User;
 import com.tokyovending.TokyoVending.repositories.UserRepository;
 import com.tokyovending.TokyoVending.utils.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +20,13 @@ import java.util.Set;
 public class UserService {
 
     private final UserRepository userRepository;
-
     @Autowired
-    @Lazy
     private PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    @Autowired
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserDto getUser(String username) {
@@ -58,7 +57,7 @@ public class UserService {
 
     public void updateUser(String username, UserDto newUser) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
-        user.setPassword(newUser.getPassword());
+        user.setPassword(passwordEncoder.encode(newUser.getPassword()));
         userRepository.save(user);
     }
 
@@ -91,6 +90,7 @@ public class UserService {
         dto.setApikey(user.getApikey());
         dto.setEmail(user.getEmail());
         dto.setAuthorities(user.getAuthorities());
+        dto.setProfilePicture(user.getProfilePicture());
         return dto;
     }
 
@@ -102,6 +102,18 @@ public class UserService {
         user.setApikey(userDto.getApikey());
         user.setEmail(userDto.getEmail());
         return user;
+    }
+
+    public void updateProfilePicture(String username, String profilePictureUrl) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+        user.setProfilePicture(profilePictureUrl);
+        userRepository.save(user);
+    }
+
+    public void removeProfilePicture(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+        user.setProfilePicture(null);
+        userRepository.save(user);
     }
 }
 

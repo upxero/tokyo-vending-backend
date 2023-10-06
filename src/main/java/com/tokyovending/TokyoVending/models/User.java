@@ -1,5 +1,7 @@
 package com.tokyovending.TokyoVending.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.List;
@@ -28,18 +30,13 @@ public class User {
     private String profilePicture;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Cart cart;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Order> orders;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_favorite_products",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private List<Product> favoriteProducts;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Order> orders;
 
     @OneToMany(
             targetEntity = Authority.class,
@@ -123,14 +120,6 @@ public class User {
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
-    }
-
-    public List<Product> getFavoriteProducts() {
-        return favoriteProducts;
-    }
-
-    public void setFavoriteProducts(List<Product> favoriteProducts) {
-        this.favoriteProducts = favoriteProducts;
     }
 }
 

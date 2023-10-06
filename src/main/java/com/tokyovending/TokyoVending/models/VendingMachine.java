@@ -1,6 +1,9 @@
 package com.tokyovending.TokyoVending.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,8 +17,12 @@ public class VendingMachine {
     @Column(nullable = false)
     private String location;
 
-    @OneToMany(mappedBy = "vendingMachine", cascade = CascadeType.ALL)
-    private List<Product> products;
+    @Column(nullable = false)
+    private boolean isOpen;
+
+    @OneToMany(mappedBy = "vendingMachine", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Product> products = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -31,6 +38,14 @@ public class VendingMachine {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public void setOpen(boolean isOpen) {
+        this.isOpen = isOpen;
     }
 
     public List<Product> getProducts() {
