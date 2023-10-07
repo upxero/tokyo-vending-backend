@@ -1,14 +1,15 @@
 -- Users
 INSERT INTO users (username, password, email, enabled, apikey, profile_picture)
-VALUES ('Mike', '$2a$10$VwlhwMryhmR4ONBkQqU/SOuW/c.rOrxWgJed6ZR0CjgJqU5V1s7ce', 'mike@example.com', TRUE, '654321', 'user.jpg'),
-       ('Maxwell', '$2a$10$VwlhwMryhmR4ONBkQqU/SOuW/c.rOrxWgJed6ZR0CjgJqU5V1s7ce', 'maxwell@example.com', TRUE, '123456', 'admin.jpg'),
-       ('Prattana', '$2a$10$VwlhwMryhmR4ONBkQqU/SOuW/c.rOrxWgJed6ZR0CjgJqU5V1s7ce', 'prattana@example.com', TRUE, '754321', 'prattana.jpg'),
-       ('Maxime', '$2a$10$VwlhwMryhmR4ONBkQqU/SOuW/c.rOrxWgJed6ZR0CjgJqU5V1s7ce', 'maxime@example.com', TRUE, '854321', 'maxime.jpg');
+VALUES ('Maxwell', '$2a$10$VwlhwMryhmR4ONBkQqU/SOuW/c.rOrxWgJed6ZR0CjgJqU5V1s7ce', 'maxwell@example.com', TRUE, '123456', 'admin.jpg'),
+       ('Mike', '$2a$10$VwlhwMryhmR4ONBkQqU/SOuW/c.rOrxWgJed6ZR0CjgJqU5V1s7ce', 'mike@example.com', TRUE, '123456', 'user.jpg'),
+       ('Prattana', '$2a$10$VwlhwMryhmR4ONBkQqU/SOuW/c.rOrxWgJed6ZR0CjgJqU5V1s7ce', 'prattana@example.com', TRUE, '123456', 'prattana.jpg'),
+       ('Maxime', '$2a$10$VwlhwMryhmR4ONBkQqU/SOuW/c.rOrxWgJed6ZR0CjgJqU5V1s7ce', 'maxime@example.com', TRUE, '123456', 'maxime.jpg');
+-- All passwords: 123456
 
 -- Authority
 INSERT INTO authorities (username, authority)
-VALUES ('Mike', 'ROLE_USER'),
-       ('Maxwell', 'ROLE_ADMIN'),
+VALUES ('Maxwell', 'ROLE_ADMIN'),
+       ('Mike', 'ROLE_USER'),
        ('Prattana', 'ROLE_USER'),
        ('Maxime', 'ROLE_USER');
 

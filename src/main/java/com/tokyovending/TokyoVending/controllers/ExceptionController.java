@@ -1,10 +1,6 @@
 package com.tokyovending.TokyoVending.controllers;
 
-import com.tokyovending.TokyoVending.exceptions.BadRequestException;
-import com.tokyovending.TokyoVending.exceptions.EntityNotFoundException;
-import com.tokyovending.TokyoVending.exceptions.RecordNotFoundException;
-import com.tokyovending.TokyoVending.exceptions.UsernameNotFoundException;
-import com.tokyovending.TokyoVending.exceptions.BadCredentialsException;
+import com.tokyovending.TokyoVending.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -44,6 +40,12 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<String> handleEntityNotFoundException(EntityNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<String> handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 
 }
