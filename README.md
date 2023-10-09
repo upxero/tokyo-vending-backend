@@ -1,14 +1,54 @@
 # Tokyo Vending Machine Backend
 
-## Introduction
-This document outlines the technical design for the backend of the Vending Machine application. The backend aims to provide a robust and efficient infrastructure to support the daily operations of the vending machine, along with tools for management and monitoring. Our goal is to enhance the overall user experience and provide administrators with comprehensive control over the machine's functionalities and performance.
+## 🏫 Project voor Novi Hogeschool
 
-## Problem Statement
-In today's vending machine market, there's a growing demand for digital integration and advanced management tools. Customers expect seamless experiences, such as easy registration, login, and access to their order history. Administrators face the challenge of effectively monitoring the vending machines' operations. This goes beyond merely restocking products; they need access to relevant statistics and data analytics to make informed business decisions and adapt to consumer trends. Hence, an integrated and efficient management and monitoring system for vending machines is no longer a luxury but a necessity.
+Dit project is uitgevoerd als onderdeel van de leerlijn Backend van de Full Stack Developer Bootcamp bij Novi Hogeschool.
 
-## Solution
-To meet these identified needs, our application introduces a comprehensive solution to cater to the requirements of both users and administrators. Users are provided with an intuitive interface that enables them to effortlessly create accounts, log in, and access detailed order history, enhancing their interaction with the vending machine and delivering a personalized experience.
+## 📖 Overzicht
 
-On the administrators' side, the application offers a robust administrative dashboard. This allows administrators to gain deep insights through order statistics, enabling them to make well-informed decisions. Furthermore, they have the ability to remotely control critical machine functions, such as opening or closing it, improving operational efficiency.
+Deze backend is ontwikkeld om de dagelijkse werkzaamheden van een moderne verkoopautomaat te ondersteunen. Er is speciale aandacht gegeven aan gebruiksvriendelijkheid voor klanten en uitgebreide beheertools voor administrators.
 
-For a more detailed technical description and usage instructions, please refer to the project documentation.
+## 🛠 Installatie
+
+### Benodigdheden:
+- JDK 17 of hoger
+- Spring Boot 3.0.5
+- PostgreSQL 13.0 of hoger
+- Maven 3.8.1
+- Internetverbinding
+
+### Stap-voor-stap Installatie:
+
+1. **JDK 17 installeren**: Bezoek [Oracle's website](https://www.oracle.com/).
+2. **Maven installeren**: Download en installeer [Maven 3.8.1](https://maven.apache.org/download.cgi).
+3. **Repository klonen**: 
+
+```bash
+git clone https://github.com/upxero/tokyo-vending-backend
+```
+
+4. **Open in een IDE**: Aanbevolen: IntelliJ IDEA.
+5. **Configureer PostgreSQL**: Maak een "TokyoVending" database.
+6. **Pas `application.properties` aan**: Zorg ervoor dat deze overeenkomt met je PostgreSQL-configuratie.
+7. **Start de backend**:
+
+```bash
+mvn spring-boot:run
+```
+
+## 🔐 Testgebruikers
+
+### Beheerder:
+- **Maxwell**:
+- username: Maxwell
+- password: 123456
+
+### Gebruiker:
+- **Mike**:
+- username: Mike
+- password: 123456
+
+## 📮 Postman
+
+Om de backend endpoints te testen, download en gebruik de Postman-collectie via [deze link](https://www.postman.com/upxero/workspace/novi-workspace/request/26893904-6443ed09-7460-4cfe-819b-e29f1e24adc6).
+
