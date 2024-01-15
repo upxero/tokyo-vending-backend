@@ -1,54 +1,54 @@
 # Tokyo Vending Machine Backend
 
-## 🏫 Project voor Novi Hogeschool
+## 🏫 Project for Novi University
 
-Dit project is uitgevoerd als onderdeel van de leerlijn Backend van de Full Stack Developer Bootcamp bij Novi Hogeschool.
+This project was executed as part of the Backend curriculum in the Full Stack Developer Bootcamp at Novi University.
 
-## 📖 Overzicht
+## 📖 Overview
 
-Deze backend is ontwikkeld om de dagelijkse werkzaamheden van een moderne verkoopautomaat te ondersteunen. Er is speciale aandacht gegeven aan gebruiksvriendelijkheid voor klanten en uitgebreide beheertools voor administrators.
+This backend is designed to support the day-to-day operations of a modern vending machine. Special attention has been given to user-friendliness for customers and comprehensive management tools for administrators.
 
-## 🛠 Installatie
+## 🛠 Installation
 
-### Benodigdheden:
-- JDK 17 of hoger
+### Prerequisites:
+- JDK 17 or higher
 - Spring Boot 3.0.5
-- PostgreSQL 13.0 of hoger
+- PostgreSQL 13.0 or higher
 - Maven 3.8.1
-- Internetverbinding
+- Internet connection
 
-### Stap-voor-stap Installatie:
+### Step-by-step Installation:
 
-1. **JDK 17 installeren**: Bezoek [Oracle's website](https://www.oracle.com/).
-2. **Maven installeren**: Download en installeer [Maven 3.8.1](https://maven.apache.org/download.cgi).
-3. **Repository klonen**: 
+1. **Install JDK 17**: Visit [Oracle's website](https://www.oracle.com/).
+2. **Install Maven**: Download and install [Maven 3.8.1](https://maven.apache.org/download.cgi).
+3. **Clone the repository**:
 
 ```bash
 git clone https://github.com/upxero/tokyo-vending-backend
 ```
 
-4. **Open in een IDE**: Aanbevolen: IntelliJ IDEA.
-5. **Configureer PostgreSQL**: Maak een "TokyoVending" database.
-6. **Pas `application.properties` aan**: Zorg ervoor dat deze overeenkomt met je PostgreSQL-configuratie.
-7. **Start de backend**:
+4. **Open in an IDE**: Recommended: IntelliJ IDEA.
+5. **Configure PostgreSQL**: Create a "TokyoVending" database.
+6. **Adjust  `application.properties`**: Ensure it matches your PostgreSQL.
+7. **Start the backend**:
 
 ```bash
 mvn spring-boot:run
 ```
 
-## 🔐 Testgebruikers
+## 🔐 Test Users
 
-### Beheerder:
+### Administrator:
 - **Maxwell**:
 - username: Maxwell
 - password: 123456
 
-### Gebruiker:
+### User:
 - **Mike**:
 - username: Mike
 - password: 123456
 
 ## 📮 Postman
 
-Om de backend endpoints te testen, download en gebruik de Postman-collectie via [deze link](https://www.postman.com/upxero/workspace/novi-workspace/request/26893904-6443ed09-7460-4cfe-819b-e29f1e24adc6).
+To test backend endpoints, download and use the Postman collection via [this link](https://www.postman.com/upxero/workspace/novi-workspace/request/26893904-6443ed09-7460-4cfe-819b-e29f1e24adc6).
 
